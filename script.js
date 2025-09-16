@@ -2,7 +2,7 @@ const itemForm = document.querySelector('#item-form');
 const itemInput = document.querySelector('#item-input');
 const itemList = document.querySelector('#item-list');
 
-// add item function
+// 01: add item function
 const addItem = (e) => {
   e.preventDefault();
 
@@ -26,7 +26,7 @@ const addItem = (e) => {
     button.setAttribute('class', 'remove-item btn-link text-red');
 
     // create textNode for "button"
-    button.innerHTML = '&times;';
+    button.innerHTML = '<p>&times;</p>';
 
     // append "button" to "li"
     li.appendChild(button);
@@ -45,3 +45,17 @@ const addItem = (e) => {
 
 // listen for submit event from the form
 itemForm.addEventListener('submit', addItem);
+
+// 02: remove items
+const removeItem = (e) => {
+  e.preventDefault();
+
+  if (e.target.tagName === 'P') {
+    if (confirm('Are you sure?')) {
+      e.target.parentElement.parentElement.remove();
+      // console.log('Remove button clicked!!!');
+    }
+  }
+};
+
+itemList.addEventListener('click', removeItem);
