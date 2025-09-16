@@ -1,6 +1,7 @@
 const itemForm = document.querySelector('#item-form');
 const itemInput = document.querySelector('#item-input');
 const itemList = document.querySelector('#item-list');
+const clearBtn = document.querySelector('#clear');
 
 // 01: add item function
 const addItem = (e) => {
@@ -59,3 +60,16 @@ const removeItem = (e) => {
 };
 
 itemList.addEventListener('click', removeItem);
+
+// 03: clear all items
+const clearAllItems = (e) => {
+  e.preventDefault();
+
+  if (confirm('Are you sure of deleting all items?')) {
+    while (itemList.firstChild) {
+      itemList.removeChild(itemList.firstChild);
+    }
+  }
+};
+
+clearBtn.addEventListener('click', clearAllItems);
