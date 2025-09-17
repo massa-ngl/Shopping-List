@@ -2,6 +2,7 @@ const itemForm = document.querySelector('#item-form');
 const itemInput = document.querySelector('#item-input');
 const itemList = document.querySelector('#item-list');
 const clearBtn = document.querySelector('#clear');
+const itemFilter = document.querySelector('#filter');
 
 // 01: add item function
 const addItem = (e) => {
@@ -38,10 +39,11 @@ const addItem = (e) => {
     itemInput.value = '';
 
     console.log(li);
-    return;
   } else {
     alert('Enter an item first!');
   }
+
+  checkUI();
 };
 
 // listen for submit event from the form
@@ -57,6 +59,8 @@ const removeItem = (e) => {
       // console.log('Remove button clicked!!!');
     }
   }
+
+  checkUI();
 };
 
 itemList.addEventListener('click', removeItem);
@@ -70,6 +74,23 @@ const clearAllItems = (e) => {
       itemList.removeChild(itemList.firstChild);
     }
   }
+
+  checkUI();
 };
 
 clearBtn.addEventListener('click', clearAllItems);
+
+// 04: clear ui state
+function checkUI() {
+  const items = itemList.querySelectorAll('li');
+
+  if (items.length === 0) {
+    clearBtn.style.display = 'none';
+    itemFilter.style.display = 'none';
+  } else {
+    clearBtn.style.display = 'block';
+    itemFilter.style.display = 'block';
+  }
+}
+
+checkUI();
