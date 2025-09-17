@@ -94,3 +94,23 @@ function checkUI() {
 }
 
 checkUI();
+
+// 05: filter items
+const filterItems = (e) => {
+  e.preventDefault();
+
+  const items = itemList.querySelectorAll('li');
+  const text = e.target.value.toLowerCase();
+
+  items.forEach((item) => {
+    const itemName = item.firstChild.textContent.toLowerCase();
+
+    if (itemName.indexOf(text) != -1) {
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+};
+
+itemFilter.addEventListener('input', filterItems);
