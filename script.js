@@ -55,30 +55,29 @@ function createIcon(classes) {
 }
 
 // 02: remove items
-const removeItem = (e) => {
-  e.preventDefault();
+function removeItem(item) {
+  if (confirm('Are you sure?')) {
+    // Remove item from DOM
+    item.remove();
 
-  if (e.target.parentElement.classList.contains('remove-item')) {
-    if (confirm('Are you sure?')) {
-      e.target.parentElement.parentElement.remove();
-    }
+    // Remove item from localStorage
+    removeItemFromStorage(item.textContent);
+
+    checkUI();
   }
-
-  checkUI();
-};
+}
 
 // 03: clear all items
-const clearItems = (e) => {
-  e.preventDefault();
-
-  if (confirm('Are you sure of deleting all items?')) {
-    while (itemList.firstChild) {
-      itemList.removeChild(itemList.firstChild);
-    }
+function clearItems() {
+  while (itemList.firstChild) {
+    itemList.removeChild(itemList.firstChild);
   }
 
+  // Clear from localStorage
+  localStorage.removeItem('items');
+
   checkUI();
-};
+}
 
 // 04: clear ui state
 function checkUI() {
@@ -140,9 +139,26 @@ function getItemsFromStorage() {
 // 08: display items from localStorage
 function displayItems() {
   const itemsFromStorage = getItemsFromStorage();
-  
+
   itemsFromStorage.forEach((item) => addItemToDOM(item));
   checkUI();
+}
+
+// 09: Remove items from DOM and localStorage
+function onClickItem(e) {
+  if (e.target.parentElement.classList.contains('remove-item')) {
+    removeItem(e.target.parentElement.parentElement);
+  }
+}
+
+function removeItemFromStorage(item) {
+  let itemsFromStorage = getItemsFromStorage();
+
+  // Filter out item to be removed
+  itemsFromStorage = itemsFromStorage.filter((i) => i !== item);
+
+  // Re-set to localstorage
+  localStorage.setItem('items', JSON.stringify(itemsFromStorage));
 }
 
 function init() {
@@ -152,6 +168,7 @@ function init() {
   clearBtn.addEventListener('click', clearItems);
   itemFilter.addEventListener('input', filterItems);
   document.addEventListener('DOMContentLoaded', displayItems);
+  itemList.addEventListener('click', onClickItem);
 
   checkUI();
 }
