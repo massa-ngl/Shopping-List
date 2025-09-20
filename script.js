@@ -22,7 +22,7 @@ const onAddItemSubmit = (e) => {
   // Add item to localStorage
   addItemToStorage(newItem);
 
-  
+
   checkUI();
 }
 
@@ -30,7 +30,7 @@ function addItemToDOM(item) {
   // Create list item
   const li = document.createElement('li');
   li.appendChild(document.createTextNode(item));
-  
+
   const button = createButton('remove-item btn-link text-red');
   li.appendChild(button);
 
@@ -54,9 +54,6 @@ function createIcon(classes) {
   return icon;
 }
 
-// listen for submit event from the form
-itemForm.addEventListener('submit', onAddItemSubmit);
-
 // 02: remove items
 const removeItem = (e) => {
   e.preventDefault();
@@ -70,10 +67,8 @@ const removeItem = (e) => {
   checkUI();
 };
 
-itemList.addEventListener('click', removeItem);
-
 // 03: clear all items
-const clearAllItems = (e) => {
+const clearItems = (e) => {
   e.preventDefault();
 
   if (confirm('Are you sure of deleting all items?')) {
@@ -84,8 +79,6 @@ const clearAllItems = (e) => {
 
   checkUI();
 };
-
-clearBtn.addEventListener('click', clearAllItems);
 
 // 04: clear ui state
 function checkUI() {
@@ -120,10 +113,19 @@ const filterItems = (e) => {
   });
 };
 
-itemFilter.addEventListener('input', filterItems);
-
 // 06: add items to localStorage
-const addItemToStorage = function (item) {
+function addItemToStorage(item) {
+  const itemsFromStorage = getItemsFromStorage();
+
+  // Add new item to array
+  itemsFromStorage.push(item);
+
+  // Convert to JSON string and set to local storage
+  localStorage.setItem('items', JSON.stringify(itemsFromStorage));
+};
+
+// 07: get items from localStorage
+function getItemsFromStorage() {
   let itemsFromStorage;
 
   if (localStorage.getItem('items') === null) {
@@ -132,9 +134,25 @@ const addItemToStorage = function (item) {
     itemsFromStorage = JSON.parse(localStorage.getItem('items'));
   }
 
-  // add new item to array
-  itemsFromStorage.push(item);
+  return itemsFromStorage;
+}
 
-  // convert to JSON string and set to localStorage
-  localStorage.setItem('items', JSON.stringify(itemsFromStorage));
-};
+// 08: display items from localStorage
+function displayItems() {
+  const itemsFromStorage = getItemsFromStorage();
+  itemsFromStorage.forEach((item) => addItemToDOM(item));
+  checkUI();
+}
+
+function init() {
+  // Event Listeners
+  itemForm.addEventListener('submit', onAddItemSubmit);
+  itemList.addEventListener('click', removeItem);
+  clearBtn.addEventListener('click', clearItems);
+  itemFilter.addEventListener('input', filterItems);
+  document.addEventListener('DOMContentLoaded', displayItems);
+
+  checkUI();
+}
+
+init();
