@@ -5,58 +5,55 @@ const clearBtn = document.querySelector('#clear');
 const itemFilter = document.querySelector('#filter');
 
 // 01: add item function
-const addItem = (e) => {
+const onAddItemSubmit = (e) => {
   e.preventDefault();
 
-  if (itemInput.value !== '') {
-    // get itemInput value
-    let userItem = itemInput.value;
+  const newItem = itemInput.value;
 
-    // create "li" element tag
-    const li = document.createElement('li');
-
-    // add class="item" attr to "li"
-    li.setAttribute('class', 'item')
-
-    // append "userItem" to "li"
-    li.appendChild(document.createTextNode(userItem));
-
-    // create "button" tag
-    const button = document.createElement('button');
-
-    // attach class="remove-item btn-link text-red" to "button" tag
-    button.setAttribute('class', 'remove-item btn-link text-red');
-
-    // create textNode for "button"
-    button.innerHTML = '<p>&times;</p>';
-
-    // append "button" to "li"
-    li.appendChild(button);
-
-    // append "li" to "ul";
-    itemList.appendChild(li);
-
-    itemInput.value = '';
-
-    console.log(li);
-  } else {
-    alert('Enter an item first!');
+  // Validate Input
+  if (newItem === '') {
+    alert('Please add an item');
+    return;
   }
 
+  // Create list item
+  const li = document.createElement('li');
+  li.appendChild(document.createTextNode(newItem));
+
+  const button = createButton('remove-item btn-link text-red');
+  li.appendChild(button);
+
+  itemList.appendChild(li);
+
+  itemInput.value = '';
+
   checkUI();
-};
+}
+
+function createButton(classes) {
+  const button = document.createElement('button');
+  button.className = classes;
+  const icon = createIcon('fa-solid fa-xmark');
+  button.appendChild(icon);
+  return button;
+}
+
+function createIcon(classes) {
+  const icon = document.createElement('i');
+  icon.className = classes;
+  return icon;
+}
 
 // listen for submit event from the form
-itemForm.addEventListener('submit', addItem);
+itemForm.addEventListener('submit', onAddItemSubmit);
 
 // 02: remove items
 const removeItem = (e) => {
   e.preventDefault();
 
-  if (e.target.tagName === 'P') {
+  if (e.target.parentElement.classList.contains('remove-item')) {
     if (confirm('Are you sure?')) {
       e.target.parentElement.parentElement.remove();
-      // console.log('Remove button clicked!!!');
     }
   }
 
