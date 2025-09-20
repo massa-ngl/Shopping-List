@@ -4,6 +4,8 @@ const itemList = document.querySelector('#item-list');
 const clearBtn = document.querySelector('#clear');
 const itemFilter = document.querySelector('#filter');
 
+let isEditMode = false;
+
 // 01: add item function
 const onAddItemSubmit = (e) => {
   e.preventDefault();
@@ -148,6 +150,8 @@ function displayItems() {
 function onClickItem(e) {
   if (e.target.parentElement.classList.contains('remove-item')) {
     removeItem(e.target.parentElement.parentElement);
+  } else {
+    setItemToEdit(e.target);
   }
 }
 
@@ -159,6 +163,20 @@ function removeItemFromStorage(item) {
 
   // Re-set to localstorage
   localStorage.setItem('items', JSON.stringify(itemsFromStorage));
+}
+
+// 11: Set Edit Mode
+function setItemToEdit(item) {
+  isEditMode = true;
+
+  itemList
+    .querySelectorAll('li')
+    .forEach((i) => i.classList.remove('edit-mode'));
+
+  item.classList.add('edit-mode');
+  formBtn.innerHTML = '<i class="fa-solid fa-pen"></i>   Update Item';
+  formBtn.style.backgroundColor = '#228B22';
+  itemInput.value = item.textContent;
 }
 
 function init() {
