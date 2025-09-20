@@ -20,10 +20,9 @@ const onAddItemSubmit = (e) => {
   addItemToDOM(newItem);
 
   // Add item to localStorage
-  addItemToStorage(newItem);
+  // addItemToStorage(newItem);
 
-  itemInput.value = '';
-
+  
   checkUI();
 }
 
@@ -31,12 +30,14 @@ function addItemToDOM(item) {
   // Create list item
   const li = document.createElement('li');
   li.appendChild(document.createTextNode(item));
-
+  
   const button = createButton('remove-item btn-link text-red');
   li.appendChild(button);
 
   // Add li to the DOM
   itemList.appendChild(li);
+
+  itemInput.value = '';
 }
 
 function createButton(classes) {
