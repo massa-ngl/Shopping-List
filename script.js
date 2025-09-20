@@ -16,18 +16,27 @@ const onAddItemSubmit = (e) => {
     return;
   }
 
-  // Create list item
-  const li = document.createElement('li');
-  li.appendChild(document.createTextNode(newItem));
+  // Create item DOM element
+  addItemToDOM(newItem);
 
-  const button = createButton('remove-item btn-link text-red');
-  li.appendChild(button);
-
-  itemList.appendChild(li);
+  // Add item to localStorage
+  addItemToStorage(newItem);
 
   itemInput.value = '';
 
   checkUI();
+}
+
+function addItemToDOM(item) {
+  // Create list item
+  const li = document.createElement('li');
+  li.appendChild(document.createTextNode(item));
+
+  const button = createButton('remove-item btn-link text-red');
+  li.appendChild(button);
+
+  // Add li to the DOM
+  itemList.appendChild(li);
 }
 
 function createButton(classes) {
