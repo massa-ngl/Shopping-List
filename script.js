@@ -140,6 +140,7 @@ function getItemsFromStorage() {
 // 08: display items from localStorage
 function displayItems() {
   const itemsFromStorage = getItemsFromStorage();
+  
   itemsFromStorage.forEach((item) => addItemToDOM(item));
   checkUI();
 }
