@@ -20,7 +20,7 @@ const onAddItemSubmit = (e) => {
   addItemToDOM(newItem);
 
   // Add item to localStorage
-  // addItemToStorage(newItem);
+  addItemToStorage(newItem);
 
   
   checkUI();
@@ -121,3 +121,20 @@ const filterItems = (e) => {
 };
 
 itemFilter.addEventListener('input', filterItems);
+
+// 06: add items to localStorage
+const addItemToStorage = function (item) {
+  let itemsFromStorage;
+
+  if (localStorage.getItem('items') === null) {
+    itemsFromStorage = [];
+  } else {
+    itemsFromStorage = JSON.parse(localStorage.getItem('items'));
+  }
+
+  // add new item to array
+  itemsFromStorage.push(item);
+
+  // convert to JSON string and set to localStorage
+  localStorage.setItem('items', JSON.stringify(itemsFromStorage));
+};
